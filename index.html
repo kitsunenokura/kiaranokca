@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>キアラのカロリーカウンター</title>
+    <title>クーキ</title>
     
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -540,7 +540,7 @@
             showMessage('Goal updated!');
         };
 
-        // --- EVENT LISTENERS ---
+// --- EVENT LISTENERS ---
         addButtonEl.addEventListener('click', addFoodItem);
         settingsButtonEl.addEventListener('click', openSettings);
         modalBackdropEl.addEventListener('click', closeSettings);
@@ -565,66 +565,67 @@
 
         try {
             // *** FIX: Check if the config is still a placeholder ***
-            if (!YOUR_FIREBASE_CONFIG_HERE || YOUR_FIREBASE_CONFIG_HERE.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+            if (!firebaseConfig || firebaseConfig.apiKey === "PASTE_YOUR_API_KEY_HERE") {
                 showMessage("Firebase config needed to save data!");
                 console.warn("Firebase config is not set. Please paste your config in the HTML file.");
                 // We stop here, the app will work offline but won't save.
-                return; 
-            }
+                
+            } else {
 
-            // Initialize Firebase
-            const app = initializeApp(YOUR_FIREBASE_CONFIG_HERE);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            
-            // Listen for authentication state changes
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    // User is signed in (anonymously)
-                    userId = user.uid;
-                    
-                    // Define the path to the user's private data document
-                    // FIX: Simplified path to not depend on a shared app ID
-                    docRef = doc(db, 'users', userId, 'calorieData', 'appData');
-
-                    // Detach any old listener before attaching a new one
-                    if (unsubscribeSnapshot) {
-                        unsubscribeSnapshot();
-                    }
-
-                    // Attach a real-time snapshot listener
-                    unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-                        if (docSnap.exists()) {
-                            // Document exists, load data
-                            const data = docSnap.data();
-                            goalCalories = data.goalCalories || 2000;
-                            foodItems = data.foodItems || [];
-                        } else {
-                            // Document doesn't exist (first-time user)
-                            // Use defaults and create the document
-                            console.log("No document found, creating one with defaults.");
-                            goalCalories = 2000;
-                            foodItems = [];
-                            saveDataToFirestore(); // This will create the doc
-                        }
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                
+                // Listen for authentication state changes
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        // User is signed in (anonymously)
+                        userId = user.uid;
                         
-                        // Re-render the UI *every* time the data changes from Firestore
-                        renderFoodList();
-                        updateUI();
-                    });
+                        // Define the path to the user's private data document
+                        // FIX: Simplified path to not depend on a shared app ID
+                        docRef = doc(db, 'users', userId, 'calorieData', 'appData');
 
-                } else {
-                    // User is signed out (shouldn't happen in this flow)
-                    console.log("User is signed out.");
-                    if (unsubscribeSnapshot) {
-                        unsubscribeSnapshot(); // Clean up listener
+                        // Detach any old listener before attaching a new one
+                        if (unsubscribeSnapshot) {
+                            unsubscribeSnapshot();
+                        }
+
+                        // Attach a real-time snapshot listener
+                        unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                            if (docSnap.exists()) {
+                                // Document exists, load data
+                                const data = docSnap.data();
+                                goalCalories = data.goalCalories || 2000;
+                                foodItems = data.foodItems || [];
+                            } else {
+                                // Document doesn't exist (first-time user)
+                                // Use defaults and create the document
+                                console.log("No document found, creating one with defaults.");
+                                goalCalories = 2000;
+                                foodItems = [];
+                                saveDataToFirestore(); // This will create the doc
+                            }
+                            
+                            // Re-render the UI *every* time the data changes from Firestore
+                            renderFoodList();
+                            updateUI();
+                        });
+
+                    } else {
+                        // User is signed out (shouldn't happen in this flow)
+                        console.log("User is signed out.");
+                        if (unsubscribeSnapshot) {
+                            unsubscribeSnapshot(); // Clean up listener
+                        }
                     }
-                }
-            });
+                });
 
-            // Trigger the authentication flow
-            // This will sign the user in anonymously
-            await signInAnonymously(auth);
+                // Trigger the authentication flow
+                // This will sign the user in anonymously
+                await signInAnonymously(auth);
+            }
 
         } catch (error) {
             console.error("Firebase Initialization Failed:", error);
