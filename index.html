@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>キアラのカロリーカウンター</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter font --><link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -148,7 +152,7 @@
 
         /* Subtle Pattern for lower part */
         .pattern-background {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0icHVycGxlIiBmaWxsLW9wYWNpdHk9IjAuMDQiLz48L3N2Zz4='); /* Tiny circles */
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0icHVycGxlIiBmaWxsLW9wYWNpdHk9IjAuMDQiLz4='); /* Tiny circles */
             background-size: 20px 20px;
             background-repeat: repeat;
             opacity: 0.3; /* Low opacity for the pattern itself */
@@ -165,16 +169,21 @@
 </head>
 <body class="flex flex-col">
 
-    <!-- The app screen, now fullscreen --><div class="app-screen">
+    <!-- The app screen -->
+    <div class="app-screen">
         
-        <!-- Subtle Pattern Background for lower part --><div class="pattern-background"></div>
+        <!-- Subtle pattern -->
+        <div class="pattern-background"></div>
 
-        <!-- Header --><header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center relative z-20">
-            <!-- Spacer --><div class="w-8 h-8"></div>
+        <!-- Header -->
+        <header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center relative z-20">
+            <!-- Spacer -->
+            <div class="w-8 h-8"></div>
             
             <h1 class="text-2xl font-bold text-gray-800">Today</h1>
             
-            <!-- Settings Button --><button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
+            <!-- Settings Button - FIX: Reverted to the outline gear icon -->
+            <button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -182,17 +191,22 @@
             </button>
         </header>
 
-        <!-- Goal Circle Area --><div class="flex-shrink-0 flex justify-center items-center py-4 relative z-20">
+        <!-- Goal Circle Area -->
+        <div class="flex-shrink-0 flex justify-center items-center py-4 relative z-20">
             <div id="progress-circle-container" class="relative w-48 h-48 sm:w-56 sm:h-56">
-                <!-- Outer circle (the progress bar container) --><div id="progress-circle" class="progress-circle w-full h-full rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
+                <!-- Outer circle (the progress bar container) -->
+                <div id="progress-circle" class="progress-circle w-full h-full rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
                     
-                    <!-- SVG for progress --><svg class="progress-svg" viewBox="0 0 120 120">
-                        <!-- Track --><circle id="progress-track"
+                    <!-- SVG for progress -->
+                    <svg class="progress-svg" viewBox="0 0 120 120">
+                        <!-- Track -->
+                        <circle id="progress-track"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
                         />
-                        <!-- Progress --><circle id="progress-ring"
+                        <!-- Progress -->
+                        <circle id="progress-ring"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
@@ -201,19 +215,23 @@
                         />
                     </svg>
 
-                    <!-- Inner circle (the content) --><div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
+                    <!-- Inner circle (the content) -->
+                    <div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
+                        <!-- FIX: Replaced '...' with default values for instant load -->
                         <span id="remaining-calories" class="text-3xl sm:text-4xl font-extrabold text-purple-600">2000</span>
                         <span class="text-base sm:text-lg font-medium text-gray-500">Remaining</span>
                         <span id="goal-calories-display" class="text-xs sm:text-sm text-gray-400 mt-2">Goal: 2000</span>
                     </div>
                 </div>
-                <!-- Wave animation now originates from here --><div id="wave-origin-point" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <!-- Wave Animation Origin -->
+                <div id="wave-origin-point" class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div id="wave-animation"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Input Area --><div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
+        <!-- Input Area -->
+        <div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
             <input type="text" id="food-input" placeholder="Food Item (e.g., Apple)" class="ios-input">
             <input type="number" id="kcal-per-100-input" placeholder="Kcal per 100g (e.g., 52)" class="ios-input">
             <input type="number" id="grams-input" placeholder="Grams eaten (e.g., 180)" class="ios-input">
@@ -223,19 +241,25 @@
             </button>
         </div>
 
-        <!-- Food List Area --><div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
+        <!-- Food List Area -->
+        <div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
             <div id="food-list" class="food-list w-full h-full overflow-y-auto space-y-2 pr-2">
-                <!-- Food items will be dynamically added here --></div>
+                <!-- Food items will be dynamically added here -->
+            </div>
         </div>
         
-        <!-- Custom Message Box --><div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none z-30">
+        <!-- Custom Message Box -->
+        <div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none z-30">
             <span id="message-text"></span>
         </div>
 
-        <!-- Settings Modal --><div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
-            <!-- Modal Backdrop --><div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
+            <!-- Modal Backdrop -->
+            <div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
             
-            <!-- Modal Panel --><div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
+            <!-- Modal Panel -->
+            <div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-gray-800">Settings</h2>
                     <button id="close-settings-button" class="text-gray-400 hover:text-gray-600">
@@ -257,162 +281,351 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Register custom property for animation ---
-            if (window.CSS && CSS.registerProperty) {
-                try {
-                    CSS.registerProperty({
-                        name: '--progress-angle',
-                        syntax: '<angle>',
-                        initialValue: '0deg',
-                        inherits: false
-                    });
-                } catch (e) {
-                    console.warn("CSS.registerProperty failed: ", e);
-                }
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- STATE ---
+        let goalCalories = 2000; // Default goal
+        let foodItems = []; // Array of { id, name, calories, grams }
+        
+        // --- FIREBASE STATE ---
+        let db, auth, userId, docRef;
+        let unsubscribeSnapshot = null; // To store the snapshot listener
+
+        // --- DOM ELEMENTS ---
+        const remainingCaloriesEl = document.getElementById('remaining-calories');
+        const goalCaloriesDisplayEl = document.getElementById('goal-calories-display');
+        const progressCircleEl = document.getElementById('progress-circle');
+        const progressRingEl = document.getElementById('progress-ring'); // SVG progress ring
+        
+        const foodInputEl = document.getElementById('food-input');
+        const kcalPer100InputEl = document.getElementById('kcal-per-100-input');
+        const gramsInputEl = document.getElementById('grams-input');
+        const addButtonEl = document.getElementById('add-button');
+        const foodListEl = document.getElementById('food-list');
+        
+        const messageBoxEl = document.getElementById('message-box');
+        const messageTextEl = document.getElementById('message-text');
+        const waveAnimationEl = document.getElementById('wave-animation');
+        const progressCircleContainer = document.getElementById('progress-circle-container'); // New container for positioning
+
+        // Settings Modal Elements
+        const settingsButtonEl = document.getElementById('settings-button');
+        const settingsModalEl = document.getElementById('settings-modal');
+        const modalBackdropEl = document.getElementById('modal-backdrop');
+        const settingsPanelEl = document.getElementById('settings-panel');
+        const closeSettingsButtonEl = document.getElementById('close-settings-button');
+        const saveSettingsButtonEl = document.getElementById('save-settings-button');
+        const goalInputEl = document.getElementById('goal-input');
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Saves the current local state (goal and food items) to Firestore.
+         */
+        const saveDataToFirestore = async () => {
+            if (!docRef) {
+                console.warn("Firestore reference not ready. Will not save.");
+                return;
+            }
+            try {
+                // We save the entire state. 'foodItems' must be a valid format for Firestore.
+                await setDoc(docRef, { goalCalories, foodItems }, { merge: true });
+            } catch (e) {
+                // Do not log errors here, as they can be noisy if offline
+                // console.error("Error saving data to Firestore: ", e);
+            }
+        };
+
+        /**
+         * Shows a custom message.
+         */
+        const showMessage = (message) => {
+            messageTextEl.textContent = message;
+            messageBoxEl.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                messageBoxEl.classList.add('opacity-0', 'translate-y-4');
+            }, 2000);
+        };
+
+        /**
+         * Renders the food list in the UI based on the global 'foodItems' array.
+         */
+        const renderFoodList = () => {
+            foodListEl.innerHTML = ''; // Clear existing list
+            
+            if (foodItems.length === 0) {
+                foodListEl.innerHTML = `<p class="text-gray-400 text-center mt-4">No food added yet.</p>`;
+                return;
             }
 
-            // --- STATE ---
-            let goalCalories = 2000;
-            let foodItems = []; // Array of { id, name, calories, grams }
-
-            // --- DOM ELEMENTS ---
-            const remainingCaloriesEl = document.getElementById('remaining-calories');
-            const goalCaloriesDisplayEl = document.getElementById('goal-calories-display');
-            const progressCircleEl = document.getElementById('progress-circle');
-            const progressRingEl = document.getElementById('progress-ring'); // SVG progress ring
-            
-            const foodInputEl = document.getElementById('food-input');
-            const kcalPer100InputEl = document.getElementById('kcal-per-100-input');
-            const gramsInputEl = document.getElementById('grams-input');
-            const addButtonEl = document.getElementById('add-button');
-            const foodListEl = document.getElementById('food-list');
-            
-            const messageBoxEl = document.getElementById('message-box');
-            const messageTextEl = document.getElementById('message-text');
-            const waveAnimationEl = document.getElementById('wave-animation');
-            const progressCircleContainer = document.getElementById('progress-circle-container'); // New container for positioning
-
-            // Settings Modal Elements
-            const settingsButtonEl = document.getElementById('settings-button');
-            const settingsModalEl = document.getElementById('settings-modal');
-            const modalBackdropEl = document.getElementById('modal-backdrop');
-            const settingsPanelEl = document.getElementById('settings-panel');
-            const closeSettingsButtonEl = document.getElementById('close-settings-button');
-            const saveSettingsButtonEl = document.getElementById('save-settings-button');
-            const goalInputEl = document.getElementById('goal-input');
-
-            // --- FUNCTIONS ---
-
-            /**
-             * Shows a custom message.
-             */
-            const showMessage = (message) => {
-                messageTextEl.textContent = message;
-                messageBoxEl.classList.remove('opacity-0', 'translate-y-4');
-                setTimeout(() => {
-                    messageBoxEl.classList.add('opacity-0', 'translate-y-4');
-                }, 2000);
-            };
-
-            /**
-             * Renders the food list in the UI.
-             */
-            const renderFoodList = () => {
-                foodListEl.innerHTML = ''; // Clear existing list
+            foodItems.forEach(item => {
+                const foodEl = document.createElement('div');
+                foodEl.className = 'bg-white p-3 rounded-xl shadow-sm flex justify-between items-center';
                 
-                if (foodItems.length === 0) {
-                    foodListEl.innerHTML = `<p class="text-gray-400 text-center mt-4">No food added yet.</p>`;
-                    return;
-                }
-
-                foodItems.forEach(item => {
-                    const foodEl = document.createElement('div');
-                    foodEl.className = 'bg-white p-3 rounded-xl shadow-sm flex justify-between items-center';
-                    
-                    foodEl.innerHTML = `
-                        <div>
-                            <span class="font-semibold text-gray-800">${item.name}</span>
-                            <span class="text-sm text-gray-500 block">${item.grams}g</span>
-                        </div>
+                // Add delete button ('X')
+                foodEl.innerHTML = `
+                    <div>
+                        <span class="font-semibold text-gray-800">${item.name}</span>
+                        <span class="text-sm text-gray-500 block">${item.grams}g</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
                         <div class="text-right">
                             <span class="font-bold text-lg text-purple-600">${item.calories}</span>
                             <span class="text-sm text-gray-500 block">kcal</span>
                         </div>
-                    `;
-                    foodListEl.appendChild(foodEl);
+                        <button class="delete-food-btn text-gray-400 hover:text-red-500 transition-colors p-1" data-id="${item.id}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                foodListEl.appendChild(foodEl);
+            });
+        };
+
+        /**
+         * Updates the goal circle and calorie counts based on global state.
+         */
+        const updateUI = () => {
+            const totalCaloriesConsumed = foodItems.reduce((sum, item) => sum + item.calories, 0);
+            const remaining = goalCalories - totalCaloriesConsumed;
+
+            remainingCaloriesEl.textContent = remaining;
+            goalCaloriesDisplayEl.textContent = `Goal: ${goalCalories}`;
+            
+            let progressPercent;
+            if (goalCalories === 0) {
+                progressPercent = 0;
+            } else {
+                progressPercent = (totalCaloriesConsumed / goalCalories);
+            }
+            progressPercent = Math.min(Math.max(progressPercent, 0), 1); // Clamp between 0 and 1
+            
+            // --- SVG Progress Update ---
+            const circumference = 339.292; // 2 * PI * 54
+            const offset = circumference - (progressPercent * circumference);
+            progressRingEl.style.strokeDashoffset = offset;
+
+            // Change color if over goal
+            if (remaining < 0) {
+                remainingCaloriesEl.classList.remove('text-purple-600');
+                remainingCaloriesEl.classList.add('text-red-500');
+                progressRingEl.style.stroke = '#ef4444'; // Red
+            } else {
+                remainingCaloriesEl.classList.add('text-purple-600');
+                remainingCaloriesEl.classList.remove('text-red-500');
+                progressRingEl.style.stroke = '#8b5cf6'; // Purple
+            }
+        };
+
+        /**
+         * Removes a food item by its ID.
+         */
+        const removeFoodItem = (id) => {
+            // Convert id from string (data-id) to number for comparison
+            const numericId = parseInt(id);
+            foodItems = foodItems.filter(item => item.id !== numericId);
+            
+            // Optimistically update UI
+            renderFoodList();
+            updateUI();
+            
+            // Sync with Firestore
+            saveDataToFirestore();
+        };
+
+        /**
+         * Handles adding a new food item.
+         */
+        const addFoodItem = () => {
+            const name = foodInputEl.value;
+            const kcalPer100 = parseFloat(kcalPer100InputEl.value);
+            const grams = parseFloat(gramsInputEl.value);
+
+            if (!name || isNaN(kcalPer100) || isNaN(grams) || kcalPer100 <= 0 || grams <= 0) {
+                showMessage('Please fill in all fields correctly.');
+                return;
+            }
+
+            const calculatedCalories = Math.round((kcalPer100 / 100) * grams);
+            
+            const newItem = {
+                id: Date.now(), // Use timestamp as a simple unique ID
+                name: name,
+                calories: calculatedCalories,
+                grams: grams
+            };
+
+            // 1. Update local state
+            foodItems.push(newItem);
+            
+            // 2. Optimistically update the UI *immediately*
+            renderFoodList();
+            updateUI();
+
+            // 3. Save new state to Firestore (sync in background)
+            saveDataToFirestore(); 
+            
+            // --- Trigger wave animation ---
+            waveAnimationEl.style.position = 'absolute';
+            waveAnimationEl.style.top = '50%';
+            waveAnimationEl.style.left = '50%';
+            waveAnimationEl.style.transform = 'translate(-50%, -50%) scale(0)';
+            waveAnimationEl.style.width = `${progressCircleContainer.offsetWidth}px`; // Start from circle's width
+            waveAnimationEl.style.height = `${progressCircleContainer.offsetHeight}px`; // Start from circle's height
+            waveAnimationEl.style.borderRadius = '50%'; // Make it circular
+            waveAnimationEl.style.background = 'radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%)';
+            
+            waveAnimationEl.classList.remove('wave-animate'); // Reset animation
+            void waveAnimationEl.offsetWidth; // Trigger reflow
+            waveAnimationEl.classList.add('wave-animate');
+            
+            // Clear inputs
+            foodInputEl.value = '';
+            kcalPer100InputEl.value = '';
+            gramsInputEl.value = '';
+        };
+
+        /**
+         * Opens the settings modal.
+         */
+        const openSettings = () => {
+            goalInputEl.value = goalCalories;
+            settingsModalEl.classList.remove('modal-hidden');
+        };
+
+        /**
+         * Closes the settings modal.
+         */
+        const closeSettings = () => {
+            settingsModalEl.classList.add('modal-hidden');
+        };
+
+        /**
+         * Saves the new settings.
+         */
+        const saveSettings = () => {
+            const newGoal = parseInt(goalInputEl.value);
+            if (isNaN(newGoal) || newGoal <= 0) {
+                showMessage('Please enter a valid goal.');
+                return;
+            }
+            
+            // 1. Update local state
+            goalCalories = newGoal;
+
+            // 2. Optimistically update the UI *immediately*
+            updateUI();
+            
+            // 3. Save new state to Firestore
+            saveDataToFirestore();
+
+            closeSettings();
+            showMessage('Goal updated!');
+        };
+
+        // --- EVENT LISTENERS ---
+        addButtonEl.addEventListener('click', addFoodItem);
+        settingsButtonEl.addEventListener('click', openSettings);
+        modalBackdropEl.addEventListener('click', closeSettings);
+        closeSettingsButtonEl.addEventListener('click', closeSettings);
+        saveSettingsButtonEl.addEventListener('click', saveSettings);
+
+        // Event delegation for deleting food items
+        foodListEl.addEventListener('click', (e) => {
+            const deleteButton = e.target.closest('.delete-food-btn');
+            if (deleteButton) {
+                const idToDelete = deleteButton.dataset.id;
+                removeFoodItem(idToDelete);
+            }
+        });
+
+        // --- INITIAL RENDER ---
+        // Render the UI immediately with default values
+        // (or the values from the HTML, which we just fixed)
+        // This makes the app feel fast and responsive.
+        // Firebase will update this data once it loads.
+        renderFoodList();
+        updateUI();
+
+        // --- FIREBASE INITIALIZATION ---
+
+        // These variables are globally provided in the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        
+        let firebaseConfig = {};
+        try {
+            firebaseConfig = JSON.parse(firebaseConfigStr);
+        } catch (e) {
+            console.error("Invalid Firebase config:", firebaseConfigStr);
+        }
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+        
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in (anonymously)
+                userId = user.uid;
+                
+                // Define the path to the user's private data document
+                docRef = doc(db, 'artifacts', appId, 'users', userId, 'calorieData', 'appData');
+
+                // Detach any old listener before attaching a new one
+                if (unsubscribeSnapshot) {
+                    unsubscribeSnapshot();
+                }
+
+                // Attach a real-time snapshot listener
+                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        // Document exists, load data
+                        const data = docSnap.data();
+                        goalCalories = data.goalCalories || 2000;
+                        foodItems = data.foodItems || [];
+                    } else {
+                        // Document doesn't exist (first-time user)
+                        // Use defaults and create the document
+                        console.log("No document found, creating one with defaults.");
+                        goalCalories = 2000;
+                        foodItems = [];
+                        saveDataToFirestore(); // This will create the doc
+                    }
+                    
+                    // Re-render the UI *every* time the data changes from Firestore
+                    renderFoodList();
+                    updateUI();
                 });
-            };
 
-            /**
-             * Updates the goal circle and calorie counts.
-             */
-            const updateUI = () => {
-                const totalCaloriesConsumed = foodItems.reduce((sum, item) => sum + item.calories, 0);
-                const remaining = goalCalories - totalCaloriesConsumed;
-
-                remainingCaloriesEl.textContent = remaining;
-                goalCaloriesDisplayEl.textContent = `Goal: ${goalCalories}`;
-                
-                let progressPercent;
-                if (goalCalories === 0) {
-                    progressPercent = 0;
-                } else {
-                    progressPercent = (totalCaloriesConsumed / goalCalories);
+            } else {
+                // User is signed out (shouldn't happen in this flow)
+                console.log("User is signed out.");
+                if (unsubscribeSnapshot) {
+                    unsubscribeSnapshot(); // Clean up listener
                 }
-                progressPercent = Math.min(Math.max(progressPercent, 0), 1); // Clamp between 0 and 1
-                
-                // --- SVG Progress Update ---
-                const circumference = 339.292; // 2 * PI * 54
-                const offset = circumference - (progressPercent * circumference);
-                progressRingEl.style.strokeDashoffset = offset;
+            }
+        });
 
-                // Change color if over goal
-                if (remaining < 0) {
-                    remainingCaloriesEl.classList.remove('text-purple-600');
-                    remainingCaloriesEl.classList.add('text-red-500');
-                    progressRingEl.style.stroke = '#ef4444'; // Red
-                } else {
-                    remainingCaloriesEl.classList.add('text-purple-600');
-                    remainingCaloriesEl.classList.remove('text-red-500');
-                    progressRingEl.style.stroke = '#8b5cf6'; // Purple
-                }
-            };
+        // Trigger the authentication flow
+        try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        } catch (error) {
+            console.error("Authentication failed:", error);
+        }
 
-            /**
-             * Handles adding a new food item.
-             */
-            const addFoodItem = () => {
-                const name = foodInputEl.value;
-                const kcalPer100 = parseFloat(kcalPer100InputEl.value);
-                const grams = parseFloat(gramsInputEl.value);
-
-                if (!name || isNaN(kcalPer100) || isNaN(grams) || kcalPer100 <= 0 || grams <= 0) {
-                    showMessage('Please fill in all fields correctly.');
-                    return;
-                }
-
-                const calculatedCalories = Math.round((kcalPer100 / 100) * grams);
-                
-                const newItem = {
-                    id: Date.now(),
-                    name: name,
-                    calories: calculatedCalories,
-                    grams: grams
-                };
-
-                foodItems.push(newItem);
-
-                // --- Trigger wave animation ---
-                // The wave element is now inside progressCircleContainer
-                // We need to set its position to absolute relative to its parent (progressCircleContainer)
-                // and then translate it by -50% to center it.
-                waveAnimationEl.style.position = 'absolute';
-                waveAnimationEl.style.top = '50%';
-                waveAnimationEl.style.left = '50%';
-                waveAnimationEl.style.transform = 'translate(-50%, -50%) scale(0)';
-                waveAnimationEl.style.width = `${progressCircleContainer.offsetWidth}px`; // Start from circle's width
-                waveAnimationEl.style.height = `${progressCircleContainer.offsetHeight}px`; // Start from circle's height
-                waveAnimationEl.style.borderRadius = '50%'; // Make it circular
-                waveAnimationEl.style.background = 'radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 
+    </script>
+</body>
+</html>
