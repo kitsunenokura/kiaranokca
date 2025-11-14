@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>キアラのカロリーカウンター</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -15,50 +13,33 @@
         /* Custom styles for the progress circle and iOS feel */
         body {
             font-family: 'Inter', sans-serif;
-            /* A light background to show the "phone" */
-            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent body scroll */
+            /* Full screen gradient background */
+            background-image: linear-gradient(135deg, #a855f7, #c084fc, #f472b6);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure it takes full viewport height */
         }
 
         /* Add the animation keyframes */
         @keyframes brew {
             0%, 100% {
-                /* Combine inner shadow with a subtle outer glow */
                 box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05), 0 0 10px rgba(168, 85, 247, 0.2);
             }
             50% {
-                /* Combine inner shadow with a stronger outer glow */
                 box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05), 0 0 20px rgba(168, 85, 247, 0.3);
             }
         }
 
-        /* The main "phone" shell */
-        .phone-shell {
-            width: 100%;
-            max-width: 390px; /* iPhone 12/13/14 Pro width */
-            /* Use min-height and aspect-ratio for flexibility */
-            min-height: 700px;
-            max-height: calc(100vh - 4rem); /* Respect viewport */
-            aspect-ratio: 390 / 844; /* Maintain iPhone aspect ratio */
-            margin: 2rem auto;
-            /* The purple and lilac gradient background */
-            background-image: linear-gradient(135deg, #a855f7, #c084fc, #f472b6);
-            border-radius: 40px; /* Rounded corners for the phone */
-            padding: 16px;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-sizing: border-box;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* The app screen inside the phone */
+        /* The app screen now covers the entire body */
         .app-screen {
             width: 100%;
-            height: 100%;
+            height: 100vh; /* Takes full viewport height */
             background-color: #f9fafb; /* Light gray for the app BG */
-            border-radius: 30px; /* Inner rounded corners */
-            overflow: hidden;
+            /* Removed border-radius as it's full screen */
+            overflow: hidden; /* Keep content within bounds */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -66,13 +47,9 @@
 
         /* Custom property for progress */
         .progress-circle {
-            /* This is now a container for the SVG and content */
             position: relative;
-            /* Fallback background */
             background-color: #e5e7eb;
-            /* Add the new animation */
             animation: brew 2.5s ease-in-out infinite;
-            /* Removed background-image and transition */
         }
 
         /* New SVG styles */
@@ -132,30 +109,32 @@
         /* Wave Animation */
         #wave-animation {
             position: absolute;
+            /* Occupy the whole app screen */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            /* Start gradient from the circle's center (approx 35% down) */
-            background: radial-gradient(circle at 50% 35%, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0) 70%);
+            background: transparent; /* Start transparent */
             transform: scale(0);
             opacity: 0;
             pointer-events: none;
             z-index: 40; /* Below message box and modal */
-            border-radius: 30px; /* Match app screen */
+            /* Removed border-radius as app screen is full */
         }
         @keyframes wave-effect {
-            from {
-                transform: scale(0);
-                opacity: 1;
+            0% {
+                /* Start small at the circle's position, full opacity */
+                transform: translate(-50%, -50%) scale(0.1);
+                opacity: 0.8; 
             }
-            to {
-                transform: scale(1.5); /* Overshoot slightly */
+            100% {
+                /* Expand and fade out */
+                transform: translate(-50%, -50%) scale(2); /* Significantly larger */
                 opacity: 0;
             }
         }
         .wave-animate {
-            animation: wave-effect 0.6s ease-out;
+            animation: wave-effect 0.6s ease-out forwards;
         }
 
         /* Settings Modal Styles */
@@ -167,48 +146,53 @@
             visibility: hidden;
         }
 
+        /* Subtle Pattern for lower part */
+        .pattern-background {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIgZmlsbD0icHVycGxlIiBmaWxsLW9wYWNpdHk9IjAuMDQiLz48L3N2Zz4='); /* Tiny circles */
+            background-size: 20px 20px;
+            background-repeat: repeat;
+            opacity: 0.3; /* Low opacity for the pattern itself */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%; /* Occupy lower 30% of the screen */
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 1; /* Below content */
+        }
+
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="flex flex-col">
 
-    <!-- The "phone" shell -->
-    <div class="phone-shell">
-        <!-- The app screen -->
-        <div class="app-screen">
+    <!-- The app screen, now fullscreen --><div class="app-screen">
+        
+        <!-- Subtle Pattern Background for lower part --><div class="pattern-background"></div>
+
+        <!-- Header --><header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center relative z-20">
+            <!-- Spacer --><div class="w-8 h-8"></div>
             
-            <!-- Header -->
-            <header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center">
-                <!-- Spacer -->
-                <div class="w-8 h-8"></div>
-                
-                <h1 class="text-2xl font-bold text-gray-800">Today</h1>
-                
-                <!-- Settings Button -->
-                <button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </button>
-            </header>
+            <h1 class="text-2xl font-bold text-gray-800">Today</h1>
+            
+            <!-- Settings Button --><button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+            </button>
+        </header>
 
-            <!-- Goal Circle Area -->
-            <!-- Use flex-shrink-0 to prevent shrinking, but allow min-h-0 on parent -->
-            <div class="flex-shrink-0 flex justify-center items-center py-4">
-                <!-- Outer circle (the progress bar container) -->
-                <!-- Responsive width/height for circle -->
-                <div id="progress-circle" class="progress-circle w-48 h-48 sm:w-56 sm:h-56 rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
+        <!-- Goal Circle Area --><div class="flex-shrink-0 flex justify-center items-center py-4 relative z-20">
+            <div id="progress-circle-container" class="relative w-48 h-48 sm:w-56 sm:h-56">
+                <!-- Outer circle (the progress bar container) --><div id="progress-circle" class="progress-circle w-full h-full rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
                     
-                    <!-- SVG for progress -->
-                    <svg class="progress-svg" viewBox="0 0 120 120">
-                        <!-- Track -->
-                        <circle id="progress-track"
+                    <!-- SVG for progress --><svg class="progress-svg" viewBox="0 0 120 120">
+                        <!-- Track --><circle id="progress-track"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
                         />
-                        <!-- Progress -->
-                        <circle id="progress-ring"
+                        <!-- Progress --><circle id="progress-ring"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
@@ -217,77 +201,60 @@
                         />
                     </svg>
 
-                    <!-- Inner circle (the content) -->
-                    <div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
+                    <!-- Inner circle (the content) --><div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
                         <span id="remaining-calories" class="text-3xl sm:text-4xl font-extrabold text-purple-600">2000</span>
                         <span class="text-base sm:text-lg font-medium text-gray-500">Remaining</span>
                         <span id="goal-calories-display" class="text-xs sm:text-sm text-gray-400 mt-2">Goal: 2000</span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Input Area -->
-            <!-- flex-shrink-0 ensures it doesn't get smaller -->
-            <div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0">
-                <input type="text" id="food-input" placeholder="Food Item (e.g., Apple)" class="ios-input">
-                <input type="number" id="kcal-per-100-input" placeholder="Kcal per 100g (e.g., 52)" class="ios-input">
-                <input type="number" id="grams-input" placeholder="Grams eaten (e.g., 180)" class="ios-input">
-                <button id="add-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
-                        style="background-image: linear-gradient(to right, #a855f7, #8b5cf6);">
-                    Add Food
-                </button>
-            </div>
-
-            <!-- Food List Area -->
-            <!-- flex-grow allows this to take up remaining space -->
-            <!-- min-h-0 is crucial for flex children to scroll properly -->
-            <div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0">
-                <div id="food-list" class="food-list w-full h-full overflow-y-auto space-y-2 pr-2">
-                    <!-- Food items will be dynamically added here -->
+                <!-- Wave animation now originates from here --><div id="wave-origin-point" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div id="wave-animation"></div>
                 </div>
             </div>
+        </div>
 
-            <!-- Bottom navigation bar (visual only) -->
-            <!-- flex-shrink-0 ensures it's not crushed -->
-            <div class="w-full h-16 bg-gray-100 border-t border-gray-200 mt-auto flex-shrink-0">
-                 <div class="w-32 h-1.5 bg-gray-400 rounded-full mx-auto mt-4"></div>
-            </div>
+        <!-- Input Area --><div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
+            <input type="text" id="food-input" placeholder="Food Item (e.g., Apple)" class="ios-input">
+            <input type="number" id="kcal-per-100-input" placeholder="Kcal per 100g (e.g., 52)" class="ios-input">
+            <input type="number" id="grams-input" placeholder="Grams eaten (e.g., 180)" class="ios-input">
+            <button id="add-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
+                    style="background-image: linear-gradient(to right, #a855f7, #8b5cf6);">
+                Add Food
+            </button>
+        </div>
+
+        <!-- Food List Area --><div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
+            <div id="food-list" class="food-list w-full h-full overflow-y-auto space-y-2 pr-2">
+                <!-- Food items will be dynamically added here --></div>
+        </div>
+        
+        <!-- Custom Message Box --><div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none z-30">
+            <span id="message-text"></span>
+        </div>
+
+        <!-- Settings Modal --><div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
+            <!-- Modal Backdrop --><div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
             
-            <!-- Custom Message Box -->
-            <div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none">
-                <span id="message-text"></span>
-            </div>
-
-            <!-- Wave Animation Element -->
-            <div id="wave-animation"></div>
-
-            <!-- Settings Modal -->
-            <div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
-                <!-- Modal Backdrop -->
-                <div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
-                
-                <!-- Modal Panel -->
-                <div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-gray-800">Settings</h2>
-                        <button id="close-settings-button" class="text-gray-400 hover:text-gray-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
-                    
-                    <div class="space-y-2">
-                        <label for="goal-input" class="block text-sm font-medium text-gray-700">Daily Calorie Goal</label>
-                        <input type="number" id="goal-input" class="ios-input w-full" placeholder="e.g., 2000">
-                    </div>
-                    
-                    <button id="save-settings-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
-                            style="background-image: linear-gradient(to right, #a855f7, #8b5cf6);">
-                        Save
+            <!-- Modal Panel --><div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-gray-800">Settings</h2>
+                    <button id="close-settings-button" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
+                
+                <div class="space-y-2">
+                    <label for="goal-input" class="block text-sm font-medium text-gray-700">Daily Calorie Goal</label>
+                    <input type="number" id="goal-input" class="ios-input w-full" placeholder="e.g., 2000">
+                </div>
+                
+                <button id="save-settings-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
+                        style="background-image: linear-gradient(to right, #a855f7, #8b5cf6);">
+                    Save
+                </button>
             </div>
-
         </div>
+
     </div>
 
     <script>
@@ -325,6 +292,7 @@
             const messageBoxEl = document.getElementById('message-box');
             const messageTextEl = document.getElementById('message-text');
             const waveAnimationEl = document.getElementById('wave-animation');
+            const progressCircleContainer = document.getElementById('progress-circle-container'); // New container for positioning
 
             // Settings Modal Elements
             const settingsButtonEl = document.getElementById('settings-button');
@@ -437,65 +405,14 @@
                 foodItems.push(newItem);
 
                 // --- Trigger wave animation ---
-                waveAnimationEl.classList.add('wave-animate');
-                setTimeout(() => {
-                    waveAnimationEl.classList.remove('wave-animate');
-                }, 600); // Animation duration in ms
-
-                // Clear inputs
-                foodInputEl.value = '';
-                kcalPer100InputEl.value = '';
-                gramsInputEl.value = '';
-
-                renderFoodList();
-                updateUI();
-            };
-
-            /**
-             * Opens the settings modal.
-             */
-            const openSettings = () => {
-                goalInputEl.value = goalCalories;
-                settingsModalEl.classList.remove('modal-hidden');
-            };
-
-            /**
-             * Closes the settings modal.
-             */
-            const closeSettings = () => {
-                settingsModalEl.classList.add('modal-hidden');
-            };
-
-            /**
-             * Saves the new settings.
-             */
-            const saveSettings = () => {
-                const newGoal = parseInt(goalInputEl.value);
-                if (isNaN(newGoal) || newGoal <= 0) {
-                    // Show a message inside the modal (or use the main showMessage)
-                    showMessage('Please enter a valid goal.');
-                    return;
-                }
-                
-                goalCalories = newGoal;
-                updateUI();
-                closeSettings();
-                showMessage('Goal updated!');
-            };
-
-            // --- EVENT LISTENERS ---
-            addButtonEl.addEventListener('click', addFoodItem);
-            
-            // Settings listeners
-            settingsButtonEl.addEventListener('click', openSettings);
-            modalBackdropEl.addEventListener('click', closeSettings);
-            closeSettingsButtonEl.addEventListener('click', closeSettings);
-            saveSettingsButtonEl.addEventListener('click', saveSettings);
-
-            // --- INITIALIZATION ---
-            renderFoodList();
-            updateUI();
-        });
-    </script>
-</body>
-</html>
+                // The wave element is now inside progressCircleContainer
+                // We need to set its position to absolute relative to its parent (progressCircleContainer)
+                // and then translate it by -50% to center it.
+                waveAnimationEl.style.position = 'absolute';
+                waveAnimationEl.style.top = '50%';
+                waveAnimationEl.style.left = '50%';
+                waveAnimationEl.style.transform = 'translate(-50%, -50%) scale(0)';
+                waveAnimationEl.style.width = `${progressCircleContainer.offsetWidth}px`; // Start from circle's width
+                waveAnimationEl.style.height = `${progressCircleContainer.offsetHeight}px`; // Start from circle's height
+                waveAnimationEl.style.borderRadius = '50%'; // Make it circular
+                waveAnimationEl.style.background = 'radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 
