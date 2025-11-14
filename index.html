@@ -182,7 +182,7 @@
             
             <h1 class="text-2xl font-bold text-gray-800">Today</h1>
             
-            <!-- Settings Button - FIX: Reverted to the outline gear icon -->
+            <!-- Settings Button -->
             <button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
@@ -217,7 +217,7 @@
 
                     <!-- Inner circle (the content) -->
                     <div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
-                        <!-- FIX: Replaced '...' with default values for instant load -->
+                        <!-- Default values for instant load -->
                         <span id="remaining-calories" class="text-3xl sm:text-4xl font-extrabold text-purple-600">2000</span>
                         <span class="text-base sm:text-lg font-medium text-gray-500">Remaining</span>
                         <span id="goal-calories-display" class="text-xs sm:text-sm text-gray-400 mt-2">Goal: 2000</span>
@@ -284,8 +284,20 @@
     <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- STEP 1: PASTE YOUR FIREBASE CONFIG HERE ---
+        // Get this from your Firebase project console (Step 1 in the instructions)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBd9CNZ6hjrtXvok7Nq8GAMedtaqdt4I1Y",
+            authDomain: "kuuki-33288.firebaseapp.com",
+            projectId: "kuuki-33288",
+            storageBucket: "kuuki-33288.firebasestorage.app",
+            messagingSenderId: "524496392044",
+            appId: "1:524496392044:web:63ef3cbb16bd997d21ad49"
+        };
+        // ---------------------------------------------
 
         // --- STATE ---
         let goalCalories = 2000; // Default goal
@@ -335,8 +347,7 @@
                 // We save the entire state. 'foodItems' must be a valid format for Firestore.
                 await setDoc(docRef, { goalCalories, foodItems }, { merge: true });
             } catch (e) {
-                // Do not log errors here, as they can be noisy if offline
-                // console.error("Error saving data to Firestore: ", e);
+                console.error("Error saving data to Firestore: ", e);
             }
         };
 
@@ -547,83 +558,77 @@
 
         // --- INITIAL RENDER ---
         // Render the UI immediately with default values
-        // (or the values from the HTML, which we just fixed)
-        // This makes the app feel fast and responsive.
-        // Firebase will update this data once it loads.
         renderFoodList();
         updateUI();
 
         // --- FIREBASE INITIALIZATION ---
 
-        // These variables are globally provided in the environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        
-        let firebaseConfig = {};
         try {
-            firebaseConfig = JSON.parse(firebaseConfigStr);
-        } catch (e) {
-            console.error("Invalid Firebase config:", firebaseConfigStr);
-        }
+            // *** FIX: Check if the config is still a placeholder ***
+            if (!YOUR_FIREBASE_CONFIG_HERE || YOUR_FIREBASE_CONFIG_HERE.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+                showMessage("Firebase config needed to save data!");
+                console.warn("Firebase config is not set. Please paste your config in the HTML file.");
+                // We stop here, the app will work offline but won't save.
+                return; 
+            }
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-        
-        // Listen for authentication state changes
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // User is signed in (anonymously)
-                userId = user.uid;
-                
-                // Define the path to the user's private data document
-                docRef = doc(db, 'artifacts', appId, 'users', userId, 'calorieData', 'appData');
-
-                // Detach any old listener before attaching a new one
-                if (unsubscribeSnapshot) {
-                    unsubscribeSnapshot();
-                }
-
-                // Attach a real-time snapshot listener
-                unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        // Document exists, load data
-                        const data = docSnap.data();
-                        goalCalories = data.goalCalories || 2000;
-                        foodItems = data.foodItems || [];
-                    } else {
-                        // Document doesn't exist (first-time user)
-                        // Use defaults and create the document
-                        console.log("No document found, creating one with defaults.");
-                        goalCalories = 2000;
-                        foodItems = [];
-                        saveDataToFirestore(); // This will create the doc
-                    }
+            // Initialize Firebase
+            const app = initializeApp(YOUR_FIREBASE_CONFIG_HERE);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            
+            // Listen for authentication state changes
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    // User is signed in (anonymously)
+                    userId = user.uid;
                     
-                    // Re-render the UI *every* time the data changes from Firestore
-                    renderFoodList();
-                    updateUI();
-                });
+                    // Define the path to the user's private data document
+                    // FIX: Simplified path to not depend on a shared app ID
+                    docRef = doc(db, 'users', userId, 'calorieData', 'appData');
 
-            } else {
-                // User is signed out (shouldn't happen in this flow)
-                console.log("User is signed out.");
-                if (unsubscribeSnapshot) {
-                    unsubscribeSnapshot(); // Clean up listener
+                    // Detach any old listener before attaching a new one
+                    if (unsubscribeSnapshot) {
+                        unsubscribeSnapshot();
+                    }
+
+                    // Attach a real-time snapshot listener
+                    unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                        if (docSnap.exists()) {
+                            // Document exists, load data
+                            const data = docSnap.data();
+                            goalCalories = data.goalCalories || 2000;
+                            foodItems = data.foodItems || [];
+                        } else {
+                            // Document doesn't exist (first-time user)
+                            // Use defaults and create the document
+                            console.log("No document found, creating one with defaults.");
+                            goalCalories = 2000;
+                            foodItems = [];
+                            saveDataToFirestore(); // This will create the doc
+                        }
+                        
+                        // Re-render the UI *every* time the data changes from Firestore
+                        renderFoodList();
+                        updateUI();
+                    });
+
+                } else {
+                    // User is signed out (shouldn't happen in this flow)
+                    console.log("User is signed out.");
+                    if (unsubscribeSnapshot) {
+                        unsubscribeSnapshot(); // Clean up listener
+                    }
                 }
-            }
-        });
+            });
 
-        // Trigger the authentication flow
-        try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            // Trigger the authentication flow
+            // This will sign the user in anonymously
+            await signInAnonymously(auth);
+
         } catch (error) {
-            console.error("Authentication failed:", error);
+            console.error("Firebase Initialization Failed:", error);
+            showMessage("Could not connect to database.");
         }
 
     </script>
