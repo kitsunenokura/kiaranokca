@@ -70,9 +70,10 @@
         #progress-track {
             stroke: #e5e7eb; /* Gray track */
         }
-        /* Individual meal segments will get their own fill */
-        .meal-segment {
-            transition: d 0.3s ease-out;
+        /* Back to a single progress ring */
+        #progress-ring {
+            stroke: #8b5cf6; /* Purple progress */
+            transition: stroke-dashoffset 0.3s ease-out, stroke 0.3s ease-out;
         }
         
         /* Custom scrollbar for the list */
@@ -103,17 +104,27 @@
             border-color: #a855f7;
             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
         }
+        
         /* Style for the input part of the combined control */
-        .ios-input input, .ios-input select {
+        .ios-input input {
             border: none;
             outline: none;
             background: transparent;
             padding: 12px 16px;
             font-size: 16px;
             flex-grow: 1;
+            /* FIX: Allow input to shrink on small screens */
+            min-width: 0; 
         }
+
         .ios-input select {
-            flex-grow: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 12px 16px;
+            font-size: 16px;
+            flex-grow: 0; /* Don't grow */
+            flex-shrink: 0; /* Don't shrink */
             -webkit-appearance: none;
             appearance: none;
             padding-right: 36px; /* Space for arrow */
@@ -127,7 +138,7 @@
             color: #9ca3af; /* text-gray-400 */
             padding: 12px 16px;
             border-left: 1px solid #e5e7eb; /* border-gray-200 */
-            flex-shrink: 0;
+            flex-shrink: 0; /* Don't shrink */
         }
 
         
@@ -218,7 +229,7 @@
             <!-- Settings Button -->
             <button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0 3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
             </button>
@@ -238,8 +249,14 @@
                             fill="none"
                             stroke-width="12"
                         />
-                        <!-- Meal segments will be injected here by JS -->
-                        <g id="meal-segments"></g>
+                        <!-- Back to a single progress ring -->
+                        <circle id="progress-ring"
+                            cx="60" cy="60" r="54"
+                            fill="none"
+                            stroke-width="12"
+                            stroke-dasharray="339.292" 
+                            stroke-dashoffset="339.292" 
+                        />
                     </svg>
 
                     <!-- Inner circle (the content) -->
@@ -398,7 +415,7 @@
         const remainingCaloriesEl = document.getElementById('remaining-calories');
         const goalCaloriesDisplayEl = document.getElementById('goal-calories-display');
         const progressCircleEl = document.getElementById('progress-circle');
-        const mealSegmentsGroupEl = document.getElementById('meal-segments'); // New
+        const progressRingEl = document.getElementById('progress-ring'); // REVERTED
         
         const foodInputEl = document.getElementById('food-input');
         const mealTypeInputEl = document.getElementById('meal-type-input'); // New
@@ -427,54 +444,6 @@
         const saveSettingsButtonEl = document.getElementById('save-settings-button');
         const goalInputEl = document.getElementById('goal-input');
 
-        // --- MEAL TYPE COLORS ---
-        const MEAL_COLORS = {
-            "Breakfast": "#e5bcdd", // light lilac
-            "Lunch": "#a27eab",     // medium lilac
-            "Dinner": "#442b63",    // dark purple
-            "Snack": "#c9a7c9"      // greyish lilac
-        };
-
-        // --- SVG HELPER FUNCTIONS ---
-        const SVG_RADIUS = 54;
-        const SVG_STROKE_WIDTH = 12;
-        const SVG_CIRCUMFERENCE = 2 * Math.PI * SVG_RADIUS;
-        const SVG_CENTER_X = 60;
-        const SVG_CENTER_Y = 60;
-
-        /**
-         * Converts polar coordinates (angle, radius) to Cartesian coordinates (x, y).
-         * Angle is in degrees, 0 at the top, increasing clockwise.
-         */
-        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-            return {
-                x: centerX + (radius * Math.cos(angleInRadians)),
-                y: centerY + (radius * Math.sin(angleInRadians))
-            };
-        }
-
-        /**
-         * Generates an SVG arc path string.
-         */
-        function describeArc(x, y, radius, startAngle, endAngle){
-            // Ensure endAngle is slightly different if it's a full circle
-            if (endAngle - startAngle >= 360) {
-                endAngle = 359.99;
-            }
-            
-            const start = polarToCartesian(x, y, radius, endAngle);
-            const end = polarToCartesian(x, y, radius, startAngle);
-
-            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-
-            const d = [
-                "M", start.x, start.y, 
-                "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
-            ].join(" ");
-
-            return d;       
-        }
 
         // --- FUNCTIONS ---
 
@@ -598,8 +567,7 @@
         };
 
         /**
-         * Updates the goal circle and calorie counts based on global state.
-         * Now draws multiple SVG arcs for meal segments.
+         * REVERTED: Updates the goal circle with a single progress bar.
          */
         const updateUI = () => {
             const totalCaloriesConsumed = foodItems.reduce((sum, item) => sum + item.calories, 0);
@@ -608,49 +576,28 @@
             remainingCaloriesEl.textContent = remaining;
             goalCaloriesDisplayEl.textContent = `Goal: ${goalCalories}`;
             
-            // Clear existing segments
-            mealSegmentsGroupEl.innerHTML = '';
-
-            let currentAngle = 0; // Start from the top (0 degrees)
+            let progressPercent;
+            if (goalCalories === 0) {
+                progressPercent = 0;
+            } else {
+                progressPercent = (totalCaloriesConsumed / goalCalories);
+            }
+            progressPercent = Math.min(Math.max(progressPercent, 0), 1); // Clamp between 0 and 1
             
-            // Sort items by ID to keep segments in a stable order
-            const sortedFoodItems = [...foodItems].sort((a, b) => a.id - b.id);
-
-            sortedFoodItems.forEach(item => {
-                if (goalCalories === 0) return; // Avoid division by zero
-
-                const caloriesFraction = item.calories / goalCalories;
-                const segmentAngle = caloriesFraction * 360; // Degrees for this segment
-
-                if (segmentAngle <= 0) return; // Don't draw tiny segments
-
-                const startAngle = currentAngle;
-                const endAngle = currentAngle + segmentAngle;
-
-                // Ensure angle doesn't exceed 360
-                const cappedEndAngle = Math.min(endAngle, 359.99); // Use 359.99 for full circle
-                
-                // Create SVG path for the segment
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', describeArc(SVG_CENTER_X, SVG_CENTER_Y, SVG_RADIUS, startAngle, cappedEndAngle));
-                path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', MEAL_COLORS[item.mealType] || MEAL_COLORS['Snack']); // Use defined color or fallback
-                path.setAttribute('stroke-width', SVG_STROKE_WIDTH);
-                path.setAttribute('class', 'meal-segment');
-
-                mealSegmentsGroupEl.appendChild(path);
-
-                currentAngle = endAngle; // Prepare for the next segment
-            });
-
+            // --- SVG Progress Update ---
+            const circumference = 339.292; // 2 * PI * 54
+            const offset = circumference - (progressPercent * circumference);
+            progressRingEl.style.strokeDashoffset = offset;
 
             // Change color if over goal
             if (remaining < 0) {
                 remainingCaloriesEl.classList.remove('text-purple-600');
                 remainingCaloriesEl.classList.add('text-red-500');
+                progressRingEl.style.stroke = '#ef4444'; // Red
             } else {
                 remainingCaloriesEl.classList.add('text-purple-600');
                 remainingCaloriesEl.classList.remove('text-red-500');
+                progressRingEl.style.stroke = '#8b5cf6'; // Purple
             }
         };
 
