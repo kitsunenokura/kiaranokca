@@ -70,20 +70,20 @@
         #progress-track {
             stroke: #e5e7eb; /* Gray track */
         }
-        #progress-ring {
-            stroke: #8b5cf6; /* Purple progress */
-            transition: stroke-dashoffset 0.3s ease-out;
+        /* Individual meal segments will get their own fill */
+        .meal-segment {
+            transition: d 0.3s ease-out;
         }
         
         /* Custom scrollbar for the list */
-        .food-list::-webkit-scrollbar {
+        .meal-list-container::-webkit-scrollbar {
             width: 4px;
         }
-        .food-list::-webkit-scrollbar-thumb {
+        .meal-list-container::-webkit-scrollbar-thumb {
             background-color: #d1d5db;
             border-radius: 20px;
         }
-        .food-list::-webkit-scrollbar-track {
+        .meal-list-container::-webkit-scrollbar-track {
             background: transparent;
         }
 
@@ -92,17 +92,44 @@
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 12px 16px;
             font-size: 16px;
             width: 100%;
-            text-align: left;
             transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex; /* Use flex for combined inputs */
+            align-items: center;
         }
-        .ios-input:focus {
+        .ios-input:focus-within {
             outline: none;
             border-color: #a855f7;
             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
         }
+        /* Style for the input part of the combined control */
+        .ios-input input, .ios-input select {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 12px 16px;
+            font-size: 16px;
+            flex-grow: 1;
+        }
+        .ios-input select {
+            flex-grow: 0;
+            -webkit-appearance: none;
+            appearance: none;
+            padding-right: 36px; /* Space for arrow */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        /* Unit text style */
+        .ios-input-unit {
+            color: #9ca3af; /* text-gray-400 */
+            padding: 12px 16px;
+            border-left: 1px solid #e5e7eb; /* border-gray-200 */
+            flex-shrink: 0;
+        }
+
         
         /* Message Box Style */
         #message-box {
@@ -211,14 +238,8 @@
                             fill="none"
                             stroke-width="12"
                         />
-                        <!-- Progress -->
-                        <circle id="progress-ring"
-                            cx="60" cy="60" r="54"
-                            fill="none"
-                            stroke-width="12"
-                            stroke-dasharray="339.292" 
-                            stroke-dashoffset="339.292" 
-                        />
+                        <!-- Meal segments will be injected here by JS -->
+                        <g id="meal-segments"></g>
                     </svg>
 
                     <!-- Inner circle (the content) -->
@@ -238,9 +259,30 @@
 
         <!-- Input Area -->
         <div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
-            <input type="text" id="food-input" placeholder="Food Item (e.g., Apple)" class="ios-input">
-            <input type="number" id="kcal-per-100-input" placeholder="Kcal per 100g (e.g., 52)" class="ios-input">
-            <input type="number" id="grams-input" placeholder="Grams eaten (e.g., 180)" class="ios-input">
+            
+            <!-- Food Item + Meal Type -->
+            <div class="ios-input p-0">
+                <input type="text" id="food-input" placeholder="Food Item (e.g., Apple)" class="p-3">
+                <select id="meal-type-input" class="text-gray-500 text-sm border-l border-gray-200">
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snack">Snack</option>
+                </select>
+            </div>
+
+            <!-- Kcal per 100g -->
+            <div class="ios-input p-0">
+                <input type="number" id="kcal-per-100-input" placeholder="Kcal per 100g (e.g., 52)" class="p-3">
+                <span class="ios-input-unit">kcal</span>
+            </div>
+            
+            <!-- Grams eaten -->
+            <div class="ios-input p-0">
+                <input type="number" id="grams-input" placeholder="Grams eaten (e.g., 180)" class="p-3">
+                <span class="ios-input-unit">gr</span>
+            </div>
+
             <button id="add-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
                     style="background-image: linear-gradient(to right, #a855f7, #8b5cf6);">
                 Add Food
@@ -249,8 +291,41 @@
 
         <!-- Food List Area -->
         <div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
-            <div id="food-list" class="food-list w-full h-full overflow-y-auto space-y-2 pr-2">
-                <!-- Food items will be dynamically added here -->
+            <!-- New container for the four meal lists -->
+            <div id="meal-list-container" class="meal-list-container w-full h-full overflow-y-auto space-y-4 pr-2">
+                
+                <!-- Breakfast Section -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-700 mb-2">Breakfast</h2>
+                    <div id="breakfast-list" class="space-y-2">
+                        <!-- Breakfast items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Lunch Section -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-700 mb-2">Lunch</h2>
+                    <div id="lunch-list" class="space-y-2">
+                        <!-- Lunch items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Dinner Section -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-700 mb-2">Dinner</h2>
+                    <div id="dinner-list" class="space-y-2">
+                        <!-- Dinner items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Snack Section -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-700 mb-2">Snack</h2>
+                    <div id="snack-list" class="space-y-2">
+                        <!-- Snack items will be dynamically added here -->
+                    </div>
+                </div>
+
             </div>
         </div>
         
@@ -275,7 +350,10 @@
                 
                 <div class="space-y-2">
                     <label for="goal-input" class="block text-sm font-medium text-gray-700">Daily Calorie Goal</label>
-                    <input type="number" id="goal-input" class="ios-input w-full" placeholder="e.g., 2000">
+                    <!-- Use standard input container for consistent styling -->
+                    <div class="ios-input p-0">
+                        <input type="number" id="goal-input" class="w-full p-3" placeholder="e.g., 2000">
+                    </div>
                 </div>
                 
                 <button id="save-settings-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
@@ -307,7 +385,7 @@
 
         // --- STATE ---
         let goalCalories = 2000; // Default goal
-        let foodItems = []; // Array of { id, name, calories, grams }
+        let foodItems = []; // Array of { id, name, calories, grams, mealType }
         let isAppInitialized = false; // Flag to control splash screen
         
         // --- FIREBASE STATE ---
@@ -320,13 +398,20 @@
         const remainingCaloriesEl = document.getElementById('remaining-calories');
         const goalCaloriesDisplayEl = document.getElementById('goal-calories-display');
         const progressCircleEl = document.getElementById('progress-circle');
-        const progressRingEl = document.getElementById('progress-ring'); // SVG progress ring
+        const mealSegmentsGroupEl = document.getElementById('meal-segments'); // New
         
         const foodInputEl = document.getElementById('food-input');
+        const mealTypeInputEl = document.getElementById('meal-type-input'); // New
         const kcalPer100InputEl = document.getElementById('kcal-per-100-input');
         const gramsInputEl = document.getElementById('grams-input');
         const addButtonEl = document.getElementById('add-button');
-        const foodListEl = document.getElementById('food-list');
+        
+        // Meal List Elements
+        const foodListContainerEl = document.getElementById('meal-list-container'); // New
+        const breakfastListEl = document.getElementById('breakfast-list'); // New
+        const lunchListEl = document.getElementById('lunch-list'); // New
+        const dinnerListEl = document.getElementById('dinner-list'); // New
+        const snackListEl = document.getElementById('snack-list'); // New
         
         const messageBoxEl = document.getElementById('message-box');
         const messageTextEl = document.getElementById('message-text');
@@ -341,6 +426,55 @@
         const closeSettingsButtonEl = document.getElementById('close-settings-button');
         const saveSettingsButtonEl = document.getElementById('save-settings-button');
         const goalInputEl = document.getElementById('goal-input');
+
+        // --- MEAL TYPE COLORS ---
+        const MEAL_COLORS = {
+            "Breakfast": "#e5bcdd", // light lilac
+            "Lunch": "#a27eab",     // medium lilac
+            "Dinner": "#442b63",    // dark purple
+            "Snack": "#c9a7c9"      // greyish lilac
+        };
+
+        // --- SVG HELPER FUNCTIONS ---
+        const SVG_RADIUS = 54;
+        const SVG_STROKE_WIDTH = 12;
+        const SVG_CIRCUMFERENCE = 2 * Math.PI * SVG_RADIUS;
+        const SVG_CENTER_X = 60;
+        const SVG_CENTER_Y = 60;
+
+        /**
+         * Converts polar coordinates (angle, radius) to Cartesian coordinates (x, y).
+         * Angle is in degrees, 0 at the top, increasing clockwise.
+         */
+        function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+            const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+            return {
+                x: centerX + (radius * Math.cos(angleInRadians)),
+                y: centerY + (radius * Math.sin(angleInRadians))
+            };
+        }
+
+        /**
+         * Generates an SVG arc path string.
+         */
+        function describeArc(x, y, radius, startAngle, endAngle){
+            // Ensure endAngle is slightly different if it's a full circle
+            if (endAngle - startAngle >= 360) {
+                endAngle = 359.99;
+            }
+            
+            const start = polarToCartesian(x, y, radius, endAngle);
+            const end = polarToCartesian(x, y, radius, startAngle);
+
+            const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+
+            const d = [
+                "M", start.x, start.y, 
+                "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
+            ].join(" ");
+
+            return d;       
+        }
 
         // --- FUNCTIONS ---
 
@@ -393,20 +527,27 @@
 
         /**
          * Renders the food list in the UI based on the global 'foodItems' array.
+         * This function now populates all four meal-specific lists.
          */
         const renderFoodList = () => {
-            foodListEl.innerHTML = ''; // Clear existing list
-            
-            if (foodItems.length === 0) {
-                foodListEl.innerHTML = `<p class="text-gray-400 text-center mt-4">No food added yet.</p>`;
-                return;
-            }
+            // Clear all lists
+            breakfastListEl.innerHTML = '';
+            lunchListEl.innerHTML = '';
+            dinnerListEl.innerHTML = '';
+            snackListEl.innerHTML = '';
 
-            foodItems.forEach(item => {
+            // Filter items by meal type
+            const breakfastItems = foodItems.filter(item => item.mealType === 'Breakfast');
+            const lunchItems = foodItems.filter(item => item.mealType === 'Lunch');
+            const dinnerItems = foodItems.filter(item => item.mealType === 'Dinner');
+            const snackItems = foodItems.filter(item => item.mealType === 'Snack');
+
+            const placeholder = `<p class="text-gray-400 text-center text-sm">No food added yet.</p>`;
+
+            // Helper function to render a single item
+            const createFoodEl = (item) => {
                 const foodEl = document.createElement('div');
                 foodEl.className = 'bg-white p-3 rounded-xl shadow-sm flex justify-between items-center';
-                
-                // Add delete button ('X')
                 foodEl.innerHTML = `
                     <div>
                         <span class="font-semibold text-gray-800">${item.name}</span>
@@ -424,12 +565,41 @@
                         </button>
                     </div>
                 `;
-                foodListEl.appendChild(foodEl);
-            });
+                return foodEl;
+            };
+
+            // Populate Breakfast list
+            if (breakfastItems.length === 0) {
+                breakfastListEl.innerHTML = placeholder;
+            } else {
+                breakfastItems.forEach(item => breakfastListEl.appendChild(createFoodEl(item)));
+            }
+
+            // Populate Lunch list
+            if (lunchItems.length === 0) {
+                lunchListEl.innerHTML = placeholder;
+            } else {
+                lunchItems.forEach(item => lunchListEl.appendChild(createFoodEl(item)));
+            }
+
+            // Populate Dinner list
+            if (dinnerItems.length === 0) {
+                dinnerListEl.innerHTML = placeholder;
+            } else {
+                dinnerItems.forEach(item => dinnerListEl.appendChild(createFoodEl(item)));
+            }
+
+            // Populate Snack list
+            if (snackItems.length === 0) {
+                snackListEl.innerHTML = placeholder;
+            } else {
+                snackItems.forEach(item => snackListEl.appendChild(createFoodEl(item)));
+            }
         };
 
         /**
          * Updates the goal circle and calorie counts based on global state.
+         * Now draws multiple SVG arcs for meal segments.
          */
         const updateUI = () => {
             const totalCaloriesConsumed = foodItems.reduce((sum, item) => sum + item.calories, 0);
@@ -438,28 +608,49 @@
             remainingCaloriesEl.textContent = remaining;
             goalCaloriesDisplayEl.textContent = `Goal: ${goalCalories}`;
             
-            let progressPercent;
-            if (goalCalories === 0) {
-                progressPercent = 0;
-            } else {
-                progressPercent = (totalCaloriesConsumed / goalCalories);
-            }
-            progressPercent = Math.min(Math.max(progressPercent, 0), 1); // Clamp between 0 and 1
+            // Clear existing segments
+            mealSegmentsGroupEl.innerHTML = '';
+
+            let currentAngle = 0; // Start from the top (0 degrees)
             
-            // --- SVG Progress Update ---
-            const circumference = 339.292; // 2 * PI * 54
-            const offset = circumference - (progressPercent * circumference);
-            progressRingEl.style.strokeDashoffset = offset;
+            // Sort items by ID to keep segments in a stable order
+            const sortedFoodItems = [...foodItems].sort((a, b) => a.id - b.id);
+
+            sortedFoodItems.forEach(item => {
+                if (goalCalories === 0) return; // Avoid division by zero
+
+                const caloriesFraction = item.calories / goalCalories;
+                const segmentAngle = caloriesFraction * 360; // Degrees for this segment
+
+                if (segmentAngle <= 0) return; // Don't draw tiny segments
+
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + segmentAngle;
+
+                // Ensure angle doesn't exceed 360
+                const cappedEndAngle = Math.min(endAngle, 359.99); // Use 359.99 for full circle
+                
+                // Create SVG path for the segment
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', describeArc(SVG_CENTER_X, SVG_CENTER_Y, SVG_RADIUS, startAngle, cappedEndAngle));
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke', MEAL_COLORS[item.mealType] || MEAL_COLORS['Snack']); // Use defined color or fallback
+                path.setAttribute('stroke-width', SVG_STROKE_WIDTH);
+                path.setAttribute('class', 'meal-segment');
+
+                mealSegmentsGroupEl.appendChild(path);
+
+                currentAngle = endAngle; // Prepare for the next segment
+            });
+
 
             // Change color if over goal
             if (remaining < 0) {
                 remainingCaloriesEl.classList.remove('text-purple-600');
                 remainingCaloriesEl.classList.add('text-red-500');
-                progressRingEl.style.stroke = '#ef4444'; // Red
             } else {
                 remainingCaloriesEl.classList.add('text-purple-600');
                 remainingCaloriesEl.classList.remove('text-red-500');
-                progressRingEl.style.stroke = '#8b5cf6'; // Purple
             }
         };
 
@@ -484,6 +675,7 @@
          */
         const addFoodItem = () => {
             const name = foodInputEl.value;
+            const mealType = mealTypeInputEl.value; // New
             const kcalPer100 = parseFloat(kcalPer100InputEl.value);
             const grams = parseFloat(gramsInputEl.value);
 
@@ -498,7 +690,8 @@
                 id: Date.now(), // Use timestamp as a simple unique ID
                 name: name,
                 calories: calculatedCalories,
-                grams: grams
+                grams: grams,
+                mealType: mealType // New
             };
 
             // 1. Update local state
@@ -529,6 +722,7 @@
             foodInputEl.value = '';
             kcalPer100InputEl.value = '';
             gramsInputEl.value = '';
+            mealTypeInputEl.value = 'Breakfast'; // Reset dropdown
         };
 
         /**
@@ -577,7 +771,7 @@
         saveSettingsButtonEl.addEventListener('click', saveSettings);
 
         // Event delegation for deleting food items
-        foodListEl.addEventListener('click', (e) => {
+        foodListContainerEl.addEventListener('click', (e) => {
             const deleteButton = e.target.closest('.delete-food-btn');
             if (deleteButton) {
                 const idToDelete = deleteButton.dataset.id;
@@ -585,19 +779,16 @@
             }
         });
 
-        // --- INITIAL RENDER ---
-        // We no longer render here, we wait for the splash screen logic
-        // renderFoodList();
-        // updateUI();
-
         // --- FIREBASE INITIALIZATION ---
 
         try {
             // *** Check if the config is still a placeholder ***
-            if (!firebaseConfig || firebaseConfig.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+            if (!firebaseConfig || firebaseConfig.apiKey === "PASTE_YOUR_API_KEY_HERE" || firebaseConfig.apiKey.includes("...")) {
                 showMessage("Firebase config needed to save data!");
                 console.warn("Firebase config is not set. Please paste your config in the HTML file.");
                 // Show the app anyway, but it will be in offline/default mode
+                renderFoodList(); // Render empty list
+                updateUI(); // Render default goal
                 hideSplashScreen();
                 
             } else {
@@ -652,6 +843,8 @@
                             unsubscribeSnapshot(); // Clean up listener
                         }
                         // Still hide splash screen if auth fails
+                        renderFoodList();
+                        updateUI();
                         hideSplashScreen();
                     }
                 });
@@ -665,6 +858,8 @@
             console.error("Firebase Initialization Failed:", error);
             showMessage("Could not connect to database.");
             // Hide splash screen even if init fails, to show the app
+            renderFoodList();
+            updateUI();
             hideSplashScreen();
         }
 
