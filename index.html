@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>クーキ</title>
     
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Load Inter font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Load Inter font --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -207,27 +205,21 @@
 </head>
 <body class="flex flex-col">
 
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="absolute inset-0 bg-white flex flex-col items-center justify-center z-[100] transition-opacity duration-500">
+    <!-- Splash Screen --><div id="splash-screen" class="absolute inset-0 bg-white flex flex-col items-center justify-center z-[100] transition-opacity duration-500">
         <h1 class="text-6xl font-bold" style="color: #c084fc;">クーキ</h1>
         <p class="text-gray-500 absolute bottom-10 text-sm">by Kura and Kiara</p>
     </div>
 
-    <!-- The app screen (hidden by default) -->
-    <div id="app-screen-main" class="app-screen opacity-0 transition-opacity duration-500">
+    <!-- The app screen (hidden by default) --><div id="app-screen-main" class="app-screen opacity-0 transition-opacity duration-500">
         
-        <!-- Subtle pattern -->
-        <div class="pattern-background"></div>
+        <!-- Subtle pattern --><div class="pattern-background"></div>
 
-        <!-- Header -->
-        <header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center relative z-20">
-            <!-- Spacer -->
-            <div class="w-8 h-8"></div>
+        <!-- Header --><header class="flex-shrink-0 text-center pt-6 pb-2 px-6 flex justify-between items-center relative z-20">
+            <!-- Spacer --><div class="w-8 h-8"></div>
             
             <h1 class="text-2xl font-bold text-gray-800">Today</h1>
             
-            <!-- Settings Button -->
-            <button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
+            <!-- Settings Button --><button id="settings-button" class="text-gray-600 hover:text-purple-600 transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -235,22 +227,17 @@
             </button>
         </header>
 
-        <!-- Goal Circle Area -->
-        <div class="flex-shrink-0 flex justify-center items-center py-4 relative z-20">
+        <!-- Goal Circle Area --><div class="flex-shrink-0 flex justify-center items-center py-4 relative z-20">
             <div id="progress-circle-container" class="relative w-48 h-48 sm:w-56 sm:h-56">
-                <!-- Outer circle (the progress bar container) -->
-                <div id="progress-circle" class="progress-circle w-full h-full rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
+                <!-- Outer circle (the progress bar container) --><div id="progress-circle" class="progress-circle w-full h-full rounded-full flex items-center justify-center p-3 shadow-inner bg-gray-200">
                     
-                    <!-- SVG for progress -->
-                    <svg class="progress-svg" viewBox="0 0 120 120">
-                        <!-- Track -->
-                        <circle id="progress-track"
+                    <!-- SVG for progress --><svg class="progress-svg" viewBox="0 0 120 120">
+                        <!-- Track --><circle id="progress-track"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
                         />
-                        <!-- Back to a single progress ring -->
-                        <circle id="progress-ring"
+                        <!-- Back to a single progress ring --><circle id="progress-ring"
                             cx="60" cy="60" r="54"
                             fill="none"
                             stroke-width="12"
@@ -259,26 +246,21 @@
                         />
                     </svg>
 
-                    <!-- Inner circle (the content) -->
-                    <div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
-                        <!-- Default values for instant load -->
-                        <span id="remaining-calories" class="text-3xl sm:text-4xl font-extrabold text-purple-600">2000</span>
+                    <!-- Inner circle (the content) --><div class="bg-white w-full h-full rounded-full flex flex-col items-center justify-center shadow-lg" style="position: relative; z-index: 10;">
+                        <!-- Default values for instant load --><span id="remaining-calories" class="text-3xl sm:text-4xl font-extrabold text-purple-600">2000</span>
                         <span class="text-base sm:text-lg font-medium text-gray-500">Remaining</span>
                         <span id="goal-calories-display" class="text-xs sm:text-sm text-gray-400 mt-2">Goal: 2000</span>
                     </div>
                 </div>
-                <!-- Wave Animation Origin -->
-                <div id="wave-origin-point" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <!-- Wave Animation Origin --><div id="wave-origin-point" class="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div id="wave-animation"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Input Area -->
-        <div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
+        <!-- Input Area --><div id="input-area" class="w-full px-6 py-3 space-y-3 flex-shrink-0 relative z-20">
             
-            <!-- Food Item + Meal Type -->
-            <div class="ios-input p-0">
+            <!-- Food Item + Meal Type --><div class="ios-input p-0">
                 <input type="text" id="food-input" placeholder="" class="p-3">
                 <select id="meal-type-input" class="text-gray-500 text-sm border-l border-gray-200">
                     <option value="Breakfast">Breakfast</option>
@@ -288,16 +270,17 @@
                 </select>
             </div>
 
-            <!-- Kcal per 100g -->
-            <div class="ios-input p-0">
-                <input type="number" id="kcal-per-100-input" placeholder="" class="p-3">
-                <span class="ios-input-unit">kcal</span>
+            <!-- Kcal per 100g --><div class="ios-input p-0">
+                <input type="number" id="kcal-value-input" placeholder="" class="p-3">
+                <!-- This is now a dropdown --><select id="kcal-type-input" class="text-gray-500 text-sm border-l border-gray-200">
+                    <option value="per 100gr">per 100gr</option>
+                    <option value="per piece">per piece</option>
+                </select>
             </div>
             
-            <!-- Grams eaten -->
-            <div class="ios-input p-0">
-                <input type="number" id="grams-input" placeholder="" class="p-3">
-                <span class="ios-input-unit">gr</span>
+            <!-- Grams eaten --><div class="ios-input p-0">
+                <input type="number" id="amount-input" placeholder="" class="p-3">
+                <span id="amount-unit-span" class="ios-input-unit">gr</span>
             </div>
 
             <button id="add-button" class="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform active:scale-95"
@@ -306,58 +289,44 @@
             </button>
         </div>
 
-        <!-- Food List Area -->
-        <div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
-            <!-- New container for the four meal lists -->
-            <div id="meal-list-container" class="meal-list-container w-full h-full overflow-y-auto space-y-4 pr-2">
+        <!-- Food List Area --><div class="flex-grow px-6 pb-6 pt-1 overflow-hidden min-h-0 relative z-20">
+            <!-- New container for the four meal lists --><div id="meal-list-container" class="meal-list-container w-full h-full overflow-y-auto space-y-4 pr-2">
                 
-                <!-- Breakfast Section -->
-                <div>
+                <!-- Breakfast Section --><div>
                     <h2 class="text-lg font-bold text-gray-700 mb-2">Breakfast</h2>
                     <div id="breakfast-list" class="space-y-2">
-                        <!-- Breakfast items will be dynamically added here -->
-                    </div>
+                        <!-- Breakfast items will be dynamically added here --></div>
                 </div>
 
-                <!-- Lunch Section -->
-                <div>
+                <!-- Lunch Section --><div>
                     <h2 class="text-lg font-bold text-gray-700 mb-2">Lunch</h2>
                     <div id="lunch-list" class="space-y-2">
-                        <!-- Lunch items will be dynamically added here -->
-                    </div>
+                        <!-- Lunch items will be dynamically added here --></div>
                 </div>
 
-                <!-- Dinner Section -->
-                <div>
+                <!-- Dinner Section --><div>
                     <h2 class="text-lg font-bold text-gray-700 mb-2">Dinner</h2>
                     <div id="dinner-list" class="space-y-2">
-                        <!-- Dinner items will be dynamically added here -->
-                    </div>
+                        <!-- Dinner items will be dynamically added here --></div>
                 </div>
 
-                <!-- Snack Section -->
-                <div>
+                <!-- Snack Section --><div>
                     <h2 class="text-lg font-bold text-gray-700 mb-2">Snack</h2>
                     <div id="snack-list" class="space-y-2">
-                        <!-- Snack items will be dynamically added here -->
-                    </div>
+                        <!-- Snack items will be dynamically added here --></div>
                 </div>
 
             </div>
         </div>
         
-        <!-- Custom Message Box -->
-        <div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none z-30">
+        <!-- Custom Message Box --><div id="message-box" class="absolute bottom-20 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg opacity-0 transform translate-y-4 pointer-events-none z-30">
             <span id="message-text"></span>
         </div>
 
-        <!-- Settings Modal -->
-        <div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
-            <!-- Modal Backdrop -->
-            <div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+        <!-- Settings Modal --><div id="settings-modal" class="modal-hidden absolute inset-0 z-50 flex items-center justify-center p-6">
+            <!-- Modal Backdrop --><div id="modal-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
             
-            <!-- Modal Panel -->
-            <div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
+            <!-- Modal Panel --><div id="settings-panel" class="relative z-10 w-full max-w-sm bg-white rounded-2xl shadow-xl p-6 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-gray-800">Settings</h2>
                     <button id="close-settings-button" class="text-gray-400 hover:text-gray-600">
@@ -367,8 +336,7 @@
                 
                 <div class="space-y-2">
                     <label for="goal-input" class="block text-sm font-medium text-gray-700">Daily Calorie Goal</label>
-                    <!-- Use standard input container for consistent styling -->
-                    <div class="ios-input p-0">
+                    <!-- Use standard input container for consistent styling --><div class="ios-input p-0">
                         <input type="number" id="goal-input" class="w-full p-3" placeholder="">
                     </div>
                 </div>
@@ -382,8 +350,7 @@
 
     </div>
 
-    <!-- Firebase SDK Imports -->
-    <script type="module">
+    <!-- Firebase SDK Imports --><script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -403,6 +370,7 @@
         // --- STATE ---
         let goalCalories = 2000; // Default goal
         let foodItems = []; // Array of { id, name, calories, grams, mealType }
+        let lastResetDate = null; // New state for daily reset
         let isAppInitialized = false; // Flag to control splash screen
         
         // --- FIREBASE STATE ---
@@ -419,8 +387,10 @@
         
         const foodInputEl = document.getElementById('food-input');
         const mealTypeInputEl = document.getElementById('meal-type-input'); // New
-        const kcalPer100InputEl = document.getElementById('kcal-per-100-input');
-        const gramsInputEl = document.getElementById('grams-input');
+        const kcalValueInputEl = document.getElementById('kcal-value-input'); // Renamed
+        const kcalTypeInputEl = document.getElementById('kcal-type-input'); // New
+        const amountInputEl = document.getElementById('amount-input'); // Renamed
+        const amountUnitSpanEl = document.getElementById('amount-unit-span'); // New
         const addButtonEl = document.getElementById('add-button');
         
         // Meal List Elements
@@ -468,7 +438,7 @@
         };
 
         /**
-         * Saves the current local state (goal and food items) to Firestore.
+         * Saves the current local state (goal, food items, and reset date) to Firestore.
          */
         const saveDataToFirestore = async () => {
             if (!docRef) {
@@ -476,8 +446,8 @@
                 return;
             }
             try {
-                // We save the entire state. 'foodItems' must be a valid format for Firestore.
-                await setDoc(docRef, { goalCalories, foodItems }, { merge: true });
+                // Save the entire state, including the new lastResetDate
+                await setDoc(docRef, { goalCalories, foodItems, lastResetDate }, { merge: true });
             } catch (e) {
                 console.error("Error saving data to Firestore: ", e);
             }
@@ -517,10 +487,19 @@
             const createFoodEl = (item) => {
                 const foodEl = document.createElement('div');
                 foodEl.className = 'bg-white p-3 rounded-xl shadow-sm flex justify-between items-center';
+                
+                // Handle new 'amount'/'amountType' and fallback to old 'grams'
+                const amount = item.amount || item.grams; // Use 'amount' if available, else 'grams'
+                const amountType = item.amountType || 'per 100gr'; // Default to 'per 100gr'
+                
+                const amountDisplay = amountType === 'per piece'
+                    ? `${amount} ${amount == 1 ? 'piece' : 'pieces'}` // Use == for loose check
+                    : `${amount}g`;
+
                 foodEl.innerHTML = `
                     <div>
                         <span class="font-semibold text-gray-800">${item.name}</span>
-                        <span class="text-sm text-gray-500 block">${item.grams}g</span>
+                        <span class="text-sm text-gray-500 block">${amountDisplay}</span>
                     </div>
                     <div class="flex items-center space-x-2">
                         <div class="text-right">
@@ -622,33 +601,44 @@
          */
         const addFoodItem = () => {
             const name = foodInputEl.value;
-            const mealType = mealTypeInputEl.value; // New
-            const kcalPer100 = parseFloat(kcalPer100InputEl.value);
-            const grams = parseFloat(gramsInputEl.value);
+            const mealType = mealTypeInputEl.value; 
+            const kcalValue = parseFloat(kcalValueInputEl.value); // New
+            const kcalType = kcalTypeInputEl.value; // New
+            const amount = parseFloat(amountInputEl.value); // New
 
-            if (!name || isNaN(kcalPer100) || isNaN(grams) || kcalPer100 <= 0 || grams <= 0) {
+            if (!name || isNaN(kcalValue) || isNaN(amount) || kcalValue <= 0 || amount <= 0) {
                 showMessage('Please fill in all fields correctly.');
                 return;
             }
 
-            const calculatedCalories = Math.round((kcalPer100 / 100) * grams);
+            // --- New Calculation Logic ---
+            let calculatedCalories = 0;
+            if (kcalType === 'per 100gr') {
+                calculatedCalories = Math.round((kcalValue / 100) * amount);
+            } else { // 'per piece'
+                calculatedCalories = Math.round(kcalValue * amount);
+            }
             
             const newItem = {
                 id: Date.now(), // Use timestamp as a simple unique ID
                 name: name,
                 calories: calculatedCalories,
-                grams: grams,
-                mealType: mealType // New
+                amount: amount, // New
+                amountType: kcalType, // New
+                mealType: mealType 
             };
 
             // 1. Update local state
             foodItems.push(newItem);
             
-            // 2. Optimistically update the UI *immediately*
+            // 2. Set the reset date to today, since we've added an item
+            lastResetDate = new Date().toLocaleDateString('en-CA');
+            
+            // 3. Optimistically update the UI *immediately*
             renderFoodList();
             updateUI();
 
-            // 3. Save new state to Firestore (sync in background)
+            // 4. Save new state to Firestore (sync in background)
             saveDataToFirestore(); 
             
             // --- Trigger wave animation ---
@@ -667,9 +657,11 @@
             
             // Clear inputs
             foodInputEl.value = '';
-            kcalPer100InputEl.value = '';
-            gramsInputEl.value = '';
+            kcalValueInputEl.value = ''; // Renamed
+            amountInputEl.value = ''; // Renamed
             mealTypeInputEl.value = 'Breakfast'; // Reset dropdown
+            kcalTypeInputEl.value = 'per 100gr'; // Reset dropdown
+            amountUnitSpanEl.textContent = 'gr'; // Reset span
         };
 
         /**
@@ -717,6 +709,15 @@
         closeSettingsButtonEl.addEventListener('click', closeSettings);
         saveSettingsButtonEl.addEventListener('click', saveSettings);
 
+        // --- New Event Listener for kcal type dropdown ---
+        kcalTypeInputEl.addEventListener('change', (e) => {
+            if (e.target.value === 'per 100gr') {
+                amountUnitSpanEl.textContent = 'gr';
+            } else {
+                amountUnitSpanEl.textContent = 'pieces';
+            }
+        });
+
         // Event delegation for deleting food items
         foodListContainerEl.addEventListener('click', (e) => {
             const deleteButton = e.target.closest('.delete-food-btn');
@@ -761,25 +762,43 @@
 
                         // Attach a real-time snapshot listener
                         unsubscribeSnapshot = onSnapshot(docRef, (docSnap) => {
+                            let shouldSave = false; // Flag to check if we need to update DB
+                            const today = new Date().toLocaleDateString('en-CA'); // Get date in YYYY-MM-DD format
+
                             if (docSnap.exists()) {
                                 // Document exists, load data
                                 const data = docSnap.data();
                                 goalCalories = data.goalCalories || 2000;
                                 foodItems = data.foodItems || [];
+                                lastResetDate = data.lastResetDate || null;
                             } else {
                                 // Document doesn't exist (first-time user)
                                 // Use defaults and create the document
                                 console.log("No document found, creating one with defaults.");
                                 goalCalories = 2000;
                                 foodItems = [];
-                                saveDataToFirestore(); // This will create the doc
+                                lastResetDate = today;
+                                shouldSave = true; // Need to save this new doc
+                            }
+                            
+                            // --- DAILY RESET LOGIC ---
+                            if (lastResetDate !== today) {
+                                console.log(`New day detected. Resetting food items. (Last reset: ${lastResetDate}, Today: ${today})`);
+                                foodItems = []; // Clear the food list
+                                lastResetDate = today; // Set new reset date
+                                shouldSave = true; // Need to save this reset state
                             }
                             
                             // Re-render the UI *every* time the data changes from Firestore
                             renderFoodList();
                             updateUI();
+                            
+                            // If we needed to reset or create the doc, save back to DB
+                            if (shouldSave) {
+                                saveDataToFirestore();
+                            }
 
-                            // *** This is the key: Hide splash *after* first data load ***
+                            // *** This is the key: Hide splash *after* first data load/check ***
                             hideSplashScreen();
                         });
 
@@ -813,3 +832,5 @@
     </script>
 </body>
 </html>
+
+
